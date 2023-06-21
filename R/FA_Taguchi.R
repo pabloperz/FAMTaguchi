@@ -11,8 +11,8 @@
 #' #'
 #' @examples
 #' \dontrun{
-#' #'(recomendado) 1.- Si cuentas con los datos en archivos scv., solo faltaria dar la ruta
-#'
+#' # 1.- Si cuentas con los datos en archivos scv., solo faltaria dar la ruta
+#' library(FAMTaguchi) ###Llamamos a la BIblioteca FAMTaguchi
 #' rm(list = ls())
 #' Porcentajes<- "ruta/nombre_del_archivo.csv"
 #' datos1<- read.csv(Porcentajes)
@@ -20,60 +20,10 @@
 #' datos2<- read.csv(Arreglo_Ortogonal)
 #' DatosT<- ""ruta/nombre_del_archivo.csv"
 #' datos3<- read.csv(DatosT)
-#'
-#'El diseño de las tablas en excel para despues ser convertidas a scv. es el siguiente:
-#'
-#' primera tabla 7 filas y 3 columnas con los siguientes datos
-#'
-#' Porcentaje<- data.frame(Nivel= c(1,2),
-#'                          CDArroz= c(10,15),
-#'                          CDPlatano= c(15,20),
-#'                          CDHuevo= c(10,15),
-#'                          GDVaca= c(10,15),
-#'                           Frijol= c(50,35),
-#'                           MiEm1= c(5,0))
-#' Porcentaes<- data.frame(t(Porcentaje))
-#' Porcentajes<- Porcentaes[-c(1),] #usar este para el valor A
-#'
-#' segunda tabla 9 filas y 9 columnas con los siguintes datos
-#' Arreglo_Ortogon<-data.frame(Factores_No.Exp= c(1, 2, 3, 4, 5, 6, 7, 8),
-#'                               Cascarilla_Arroz= c(1, 1, 1, 1, 2, 2, 2, 2),
-#'                               Cascara_Platano= c(1, 1, 2, 2, 1, 1, 2, 2),
-#'                               Cascara_Huevo=  c(1, 1, 2, 2, 2, 2, 1, 1),
-#'                               Grasa_Vacuna= c(1, 2, 1, 2, 1, 2, 1, 2),
-#'                               Frijol=  c(1,2,1,2,2,1,2,1),
-#'                               M.eEM1=  c(1,2,2,1,1,2,2,1),
-#'                               error1=  c(1,2,2,1,1,2,2,1),
-#'                               error2=  c(1,2,2,1,2,1,1,2))
-#' Arreglo_Ortogona<- data.frame(t(Arreglo_Ortogon))
-#' Arreglo_Ortogonal<- Arreglo_Ortogona[-c(1),] #usar este para el valor B
-#'
-#'  Datos<- data.frame(No.Exp= c("C_inicio", "C_final", "H_inicial", "H_final", "GC_inicial", "GC_final", "P_inicial", "v_HCl", "N_HCl", "J_inicial",  "PPI", "PFC"),
-#'                      n1=c(10, 9.680,10, 8.98,30,27.13,10, 88.47,0.17,2 ,1.68, 1.1),
-#'                      n2=c(10, 9.660,10,8.94,30,25.31,10,71.05,0.17,2, 1.71, 1.21),
-#'                      n3=c(10,9.790,10,9.06,30,26.85,10,88.00, 0.17, 2, 1.65, 1.11),
-#'                      n4=c(10,9.780,10,9.09,30,25.56,10, 74.01,0.17,2,1.73,1.22),
-#'                      n5=c(10,9.668,10,9.14,30,27.16,10,72.06,0.17,2,1.72, 1.18),
-#'                      n6=c(10,9.670,10,9.11,30,25.27,10,77.04, 0.17,2,1.62,1.15),
-#'                      n7=c(10,9.770,10,8.81,30,26.85,10,67.76, 0.17,2, 1.69,1.16),
-#'                      n8=c(10,9.760,10,8.84,30,25.32,10,86.11,0.17,2,1.64,1.25))
-#'  Datosu<- data.frame(t(Datos))
-#'  DatosT<- Datosu[-c(1),] #usar este para el valor C
-#'
-#'#####NO recomiendo hacer data.frame de los datos, es probable que la funcion se confunda.#####
+#' Taguchi<- function(A= data.frame(Porcentajes),B= data.frame(Arreglo_Ortogonal),C=data.frame(DatosT)) ##Llamamos a la funcion
+#' ###### NO correra los archivos estan vacios #######
 #' }
-#'
-
-
-
-
-rm(list = ls())
-Porcentajes<- "C:/Users/Pablo/Downloads/EDGPMT/NivPorcentaje.csv"
-d1<- read.csv(Porcentajes)
-Arreglo_Ortogonal<- "C:/Users/Pablo/Downloads/EDGPMT/DEAGPMT.csv"
-d2<- read.csv(Arreglo_Ortogonal)
-DatosT<- "C:/Users/Pablo/Downloads/EDGPMT/R_Arreglo_Ortogonal.csv"
-d3<- read.csv(DatosT)
+#' 
 Taguchi<- function(A= data.frame(),B= data.frame(),C=data.frame()){
 
   No.Niveles<- length(A[1,-1])
@@ -637,4 +587,3 @@ Taguchi<- function(A= data.frame(),B= data.frame(),C=data.frame()){
 
 }
 
-Taguchi(A=data.frame(d1), B=data.frame(d2), C=data.frame(d3) )
