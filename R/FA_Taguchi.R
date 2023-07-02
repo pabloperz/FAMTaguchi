@@ -24,6 +24,16 @@
 #' ###### NO correra los archivos estan vacios #######
 #' }
 #' 
+
+
+rm(list = ls())
+Porcentajes<- "C:/Users/Pablo/Downloads/EDGPMT/NivPorcentaje.csv"
+d1<- read.csv(Porcentajes)
+Arreglo_Ortogonal<- "C:/Users/Pablo/Downloads/EDGPMT/DEAGPMT.csv"
+d2<- read.csv(Arreglo_Ortogonal)
+DatosT<- "C:/Users/Pablo/Downloads/EDGPMT/R_Arreglo_Ortogonal.csv"
+d3<- read.csv(DatosT)
+
 Taguchi<- function(A= data.frame(),B= data.frame(),C=data.frame()){
 
   No.Niveles<- length(A[1,-1])
@@ -587,3 +597,4 @@ Taguchi<- function(A= data.frame(),B= data.frame(),C=data.frame()){
 
 }
 
+Taguchi(A= data.frame(d1),B= data.frame(d2),C=data.frame(d3))

@@ -1,0 +1,346 @@
+---
+title: "Tutorial uso del paquete FAMTaguchi"
+author: "Pérez Martínez Pablo"
+date: "2023-06"
+output: pdf_document
+bibliography: references.bib
+---
+
+# Introducción
+La alimentación es un factor primordial en Avicultura; como en toda explotación 
+zootécnica, se deben conocer los diversos alimentos utilizables, así como las 
+peculiares cualidades e indicaciones de cada uno, así, por ejemplo, los 
+alimentos grasos, lo mismo que los harinosos o feculentos, favorecen el cebo en 
+contra de la producción huevera. Por esto hay gallinas, aparentemente, bien 
+alimentadas, sin embargo, ponen poco.Por tanto para garantizar la buena salud de las aves importa, que la alimentación sea variada, evitando enfermedades por carencia de elementos nutritivos indispensables debido al empleo de una sola clase de alimento. Cabe mencionar que muchas industrias ofrecen subproductos aprovechables que son útil complemento de los piensos tradicionalmente utilizados.El alimento es una sustancia nutritiva que toma un organismo o un ser vivo para mantener sus funciones vitales. En el caso de las aves de corral el alimento que se le suministra depende de la edad y tipo de ave, según propósito de engorde o postura; En diferentes épocas de su vida, las aves necesitan raciones que 
+contengan distintas cantidades de carbohidratos, proteínas, grasas, minerales y 
+vitaminas. La alimentación de las aves es la parte esencial en la producción de 
+carne de pollo y huevo.[@Avellan2016]
+
+Un diseño de Taguchi es un experimento diseñado que permite elegir un producto o proceso que funciona con mayor consistencia. Los diseños de Taguchi reconocen que no todos los factores que causan variabilidad pueden ser controlados. Estos factores que no se pueden controlar se denominan factores de ruido. Los diseños de Taguchi intentan identificar factores controlables (factores de control) que minimicen el efecto de los factores de ruido. Durante el experimento, usted manipula los factores de ruido para hacer que haya variabilidad y luego determina la configuración óptima de los factores de control para que el proceso o producto sea robusto o resistente ante la variación causada por los factores de ruido. Un proceso diseñado con esta meta producirá una salida más consistente. Un producto diseñado con esta meta tendrá un rendimiento más consistente, independientemente del entorno en el que se utilice.
+
+Los diseños de Taguchi utilizan arreglos ortogonales, los cuales estiman los efectos de los factores en la media de respuesta y en la variación. Un arreglo ortogonal significa que el diseño está balanceado, de manera que los niveles de los factores se ponderan equitativamente. Debido a eso, cada factor se puede evaluar sin considerar todos los demás factores, de manera que el efecto de un factor no afecta la estimación de otro factor. Esto puede reducir el tiempo y el costo asociados al experimento cuando se utilizan diseños fraccionados. El Codigo del Paquete FAMTaguchi esta en la siguiente direccion GitHUb <https://github.com/pabloperz/FAMTaguchi>
+
+Para la instalacion de paquete en cualquier computadora se realiza ejecutando en la consola de R lo siguiente:
+```{r,eval=FALSE}
+devtools::install_github("pabloperz/FAMTaguchi")
+
+```
+
+
+# Objetivos General
+
++ Realizar una funcion en R que permita formular un alimento, haciendo uso de residuos orgánicos, frijol y microorganismos efectivos, que pueda ser suministrado a aves de corral usando el Metodo Taguchi.
+
+# Objetivos Especificos
++ Formular alimento de aves de corral a partir de cascarillas de arroz, concha de huevo, cáscara de plátano, grasa vacuna,frijol caupí y microorganismos efectivos (EM1).
+
++ Determinar si el alimento cumple con los requerimientos nutricionales 
+mediante un análisis proximal aplicando los Métodos Oficiales de Análisis 
+de la AOAC (Association of Official Agricultural Chemists) y Manuales de 
+control de calidad de los alimentos. FAO (Organización de las Naciones 
+Unidas para la Alimentación y la Agricultura).
+
++ Comparar el alimento formulado con el alimento industrializado en base a
+su contenido nutricional.
+
+
+
+# Modelo Estadistico y Prueba de Hipotesis
+
+Durante la programacion de este paquete en RStudio se utilizaron diferentes datos que son necesarios para que la funcion nos arroje los resultados que queremos, estos datos deben de estar de una manera muy especifica con el objetivo de que la funcion pueda comprender mucho mejor y no nos arroje errores.
+
+TABLA NO.1: "Porcentajes"
+En esta tabla tenemos los niveles con los cuales en usuario a decidido trabajar y que porcentaje pondra cada factor(ingredientes),
+es una tabla de 6 filas por 3 columnas, como se muestran a continuacion:
+
+```{r,eval=FALSE}
+Nivel (%) 	1    	2
+x1     	    %     %
+x2      	  %	    %
+x3    	    %  	  %
+x4	        %  	  %
+x5    	    %  	  %
+x6          %	    %
+
+Ejemplo:
+
+Nivel (%) 	1    	2
+CDArroz	    10	  15
+CDPlatano	  15	  20
+CDHuevo	    10  	15
+GDVaca	    10  	15
+Frijol	    50  	35
+MiEm1	      5	    0
+```
+
+TABLA NO.2: "Arreglo_Ortogonal"
+En esta tabla tenemos el numero de pruebas que se haran y a que niveles fijamos cada factor(ingrediente)
+para para despues analizar los resultados que se obtienen con esas combinaciones, cada nivel debe de ser en la misma cantidad, es una tabla de 8 filas por 9 columnas. se muestra el modelo de la tabla a aplicar:
+```{r,eval=FALSE}
+Factores_No.Exp	      1	2	3	4	5	6	7	8
+x1                	  n	n	n	n	n	n	n n
+x2                	  n	n	n	n	n	n	n	n
+x3              	    n	n	n	n	n	n	n	n
+x4          	        n	n	n	n	n	n	n	n
+x5    	              n	n	n	n	n	n	n	n
+x6                  	n	n	n	n	n	n	n	n
+error1	              n	n	n	n	n	n	n	n
+error2               	n	n	n	n	n	n	n	n
+
+Ejemplo:
+
+Factores_No.Exp	      1	2	3	4	5	6	7	8
+Cascarilla de Arroz	  1	1	1	1	2	2	2	2
+Cascara de Platano	  1	1	2	2	1	1	2	2
+Cascara de Huevo	    1	1	2	2	2	2	1	1
+Grasa Vacuna	        1	2	1	2	1	2	1	2
+Frijol	              1	2	1	2	2	1	2	1
+M.e EM1             	1	2	2	1	1	2	2	1
+error1	              1	2	2	1	1	2	2	1
+error2               	1	2	2	1	2	1	1	2
+```
+
+TABLA NO.3: "DatosT"
+Esta es una tabla de de 8 filas por 13 columnas, en ella estan los datos del laboratorio que hemos obtenido, se muestra un ejemplo:
+```{r, eval=FALSE}
+No. Exp	C_inicio	C_final	H_inicial	H_final	GC_inicial	GC_final	P_inicial	 v_HCl	 N_HCl	 J_inicial	PPI	 PFC
+1	         n	       n	     n	       n	     n	         n	        n	       n	     n	     n	       n	 n
+2	         n	       n	     n	       n	     n	         n	        n	       n	     n	     n	       n	 n
+3          n	       n	     n	       n	     n	         n 	        n	       n   	   n	     n	       n   n
+4	         n	       n	     n	       n	     n	         n 	        n 	     n	     n	     n	       n	 n
+5	         n	       n	     n	       n	     n	         n	        n	       n	     n	     n	       n	 n
+6	         n	       n	     n	       n	     n	         n	        n	       n	     n	     n	       n 	 n
+7	         n	       n	     n	       n	     n	         n	        n	       n	     n	     n	       n	 n
+8	         n	       n	     n	       n	     n	         n          n	       n 	     n	     n	       n	 n
+
+Ejemplo:
+No. Exp	C_inicio	C_final	H_inicial	H_final	GC_inicial	GC_final	P_inicial	 v_HCl	 N_HCl	 J_inicial	PPI	 PFC
+1	         10	      9.68	    10	    8.98	    30	      27.13	     10	     88.47	  0.17	     2	   1.68	 1.1
+2	         10	      9.66	    10	    8.94	    30	      25.31	     10	     71.05	  0.17	     2	   1.71	1.21
+3          10	      9.79	    10	    9.06	    30	      26.85	     10	       88   	0.17	     2	   1.65	1.11
+4	         10	      9.78	    10	    9.09	    30	      25.56	     10	     74.01	  0.17	     2	   1.73	1.22
+5	         10	      9.668	    10	    9.14	    30	      27.16	     10	     72.06	  0.17	     2	   1.72	1.18
+6	         10	      9.67	    10	    9.11	    30	      25.27	     10	     77.04	  0.17	     2	   1.62	1.15
+7	         10	      9.77	    10	    8.81	    30	      26.85	     10	     67.76	  0.17	     2	   1.69	1.16
+8	         10	      9.76	    10	    8.84	    30	      25.32	     10	     86.11	  0.17	     2	   1.64	1.25
+```
+
+```{r,eval=FALSE}
+donde:
++ Cenizas
+C_inicial = peso de la muestra inicial,
+C_final = peso de la muestra final
++ Humedad
+H_inicial = peso de la muestra inicial,
+H_final = peso de la muestra final
++ Grasa
+GC_inicial = peso de la muestra inicial,
+GC_final = peso de la muestra final
++ Proteina
+P_inicial = peso de la muestra inicial,
+v_HCl= volumen de HCl para titular,
+N_HCl= Normalidad del HCl
++ Fibra
+J_inicial = peso de la muestra inicial,
+PPI = perdida de peso en la incineracion,
+PFC= pérdida de peso de fibra cerámica.
+```
+
+Hipotesis
+Ho= el alimento propuesto no tiene los requerimentos necesarios para satisfacer al animal.
+Ha= el alimento propuesto cumple con los requerimentos necesarios para satisfacer al animal.
+
+# Como se obtienen los DatosT
+Humedad
+
+Para determinar humedad se utilizó el método 930.15 de Association of Official 
+Agricultural Chemists. (AOAC, 2012).
+
+Antes de iniciar el procedimiento para determinar humedad, se calentó el crisol 
+de porcelana a 110°C durante un tiempo aproximado de 2 horas. Se pesaron 10 
+gramos de la muestra, utilizando una balanza con precisión de un digito. Luego
+se colocó la muestra en un horno mufla a 135°C durante 12 horas y 
+posteriormente se pesó nuevamente la muestra [@AOAC2012]
+
+Cenizas
+
+Para determinar cenizas se utilizó el método 942.05 de AOAC (2012).
+
+Para medir cenizas se calentó el crisol, igual que en el procedimiento para medir 
+humedad, la muestra a la que se le determinó cenizas fue secada previamente 
+en una mufla. A continuación se pesó 10 gramos de muestra seca, luego se 
+colocó en una mufla y se calcinó a 550°C por 12 horas y posteriormente se pesó 
+nuevamente [@AOAC2012]
+
+Grasa cruda
+
+Para determinar grasa cruda se utilizó el método 2003.05 de AOAC (2012).
+
+Para realizar el análisis de grasa cruda se pesó en un dedal de extracción 30 g 
+de la muestra seca, luego se colocó en la unidad de extracción o extractor 
+Soxhlet. Se usó hexano grado alimenticio. Posteriormente la muestra seca se 
+calentó a 70°C y se dejó por 3 horas, luego se colocó el dedal en un desecador 
+durante 14 horas y para finalizar se pesó la muestra[@AOAC2012]
+
+
+Proteína cruda
+
+Para determinar proteína cruda se utilizó el método 2001.11 de AOAC (2012).
+
+Para el análisis de proteína se colocó 10 g de muestra en un matraz, se le 
+adicionó 7 g de sulfato de potasio (K2SO4), 0.8 g de sulfato de cobre (II) 
+pentahidratado (CuSO4 x 5H2O) y 20 mL de ácido sulfúrico concentrado (H2SO4).
+Luego se ubicó el matraz en el digestor y se calentó a 420°C durante 1 hora.
+Posteriormente se dejó enfriar, y se adicionó 90 mL de agua destilada. A 
+temperatura ambiente se agregó 25 mL de solución de sulfato de sodio 4%, 
+después se le adicionó 80 mL de hidróxido de potasio al 40%, Seguidamente se 
+conectó el matraz a la unidad de destilación. Posteriormente se tomó 50 mL del 
+destilado al cual se le adicionó 50 mL de solución indicadora fenolftaleína 
+(C20H14O4). Seguidamente se tituló con ácido clorhídrico 0.17N (HCl) [@AOAC2012]
+
+Fibra cruda
+
+Para determinar fibra cruda se utilizó el método 973.18 de AOAC (2012).
+
+Para determinar el porcentaje de fibra se pesó en una balanza, con precisión de 
+un digito, 2 g de muestra seca y desgrasada, a esta se le agregó 2 g de fibra 
+cerámica junto con 200 mL de ácido sulfúrico (H2SO4) 0.255 N y se hirvió en el 
+extractor Soxhlet durante 30 minutos, posteriormente se filtró y se lavó cuatro 
+veces con 75 mL de agua hirviendo, en cada lavado, luego se retornó el residuo 
+al extractor Soxhlet y se hirvió durante 30 minutos.
+A continuación se procedió a lavar con 25 mL de ácido sulfúrico 0.255 N 
+hirviendo y 150 mL de agua hirviente, además de 25 mL de etanol al 95%. Se 
+tomó el residuo en un crisol de porcelana y se ingresó a la mufla a 130 °C por 2 
+horas, después se dejó enfriar en el desecador y se pesó, rápidamente, después 
+se incineró a 600 °C durante 30 minutos, finalmente se pesó el incinerado [@AOAC2012]
+
+Carbohidratos
+
+El porcentaje de carbohidratos se obtienen por diferencia entre la masa total y la 
+cantidad de masa húmeda, ceniza, grasa, proteína, y fibra.
+
+
+# Ejemplo de Aplicación
+Formular un alimento para aves de postura con los ingredientes de los ejemplos de las tablas y son sus datos
+
+library(FAMTaguchi) #llamamos ala libreria
+
+rm(list = ls())
+damos nuestras rutas
+
+Porcentajes<- "Ruta/ .csv"
+d1<- read.csv(Porcentajes)
+Arreglo_Ortogonal<- "Ruta/ .csv"
+d2<- read.csv(Arreglo_Ortogonal)
+DatosT<- "Ruta/ .csv"
+d3<- read.csv(DatosT)
+
+Taguchi(A=data.frame(d1), B=data.frame(d2), C=data.frame(d3))
+
+Obtenemos los Resultados
+```{r,eval=FALSE}
+$Resultados_Analisis_Proximales
+  Experimentos Porc_Ceniza Porc_Humedad Porc_GrasaC Porc_Proteina Porc_Fibra Carbohidratos
+1            1        3.20         10.2    9.566667      13.15991       29.0      34.87342
+2            2        3.40         10.6   15.633333      10.56869       25.0      34.79798
+3            3        2.10          9.4   10.500000      13.09000       27.0      37.91000
+4            4        2.20          9.1   14.800000      11.00899       25.5      37.39101
+5            5        3.32          8.6    9.466667      10.71893       27.0      40.89441
+6            6        3.30          8.9   15.766667      11.45970       23.5      37.07363
+7            7        2.30         11.9   10.500000      10.07930       26.5      38.72070
+8            8        2.40         11.6   15.600000      12.80886       19.5      38.09114
+
+$Efecto_Ceniza
+     Efecto Nivel1 NIvel2
+1   C.Arroz  2.725  2.830
+2 C.platano  3.305  2.250
+3  C. Huevo  2.825  2.730
+4     Grasa  2.730  2.825
+5    Frijol  2.750  2.805
+6      M.e.  2.780  2.775
+
+$Efecto_Humedad
+     Efecto Nivel1 NIvel2
+1   C.Arroz  9.825  10.25
+2 C.platano  9.575  10.50
+3  C. Huevo 11.075   9.00
+4     Grasa 10.025  10.05
+5    Frijol 10.025  10.05
+6      M.e.  9.875  10.20
+
+$Efecto_Proteina
+     Efecto   Nivel1   NIvel2
+1   C.Arroz 11.95690 11.26670
+2 C.platano 11.47681 11.74679
+3  C. Huevo 11.65419 11.56940
+4     Grasa 11.76203 11.46156
+5    Frijol 12.62962 10.59398
+6      M.e. 11.92417 11.29942
+
+$Efecto_Grasa
+     Efecto   Nivel1   NIvel2
+1   C.Arroz 12.62500 12.83333
+2 C.platano 12.60833 12.85000
+3  C. Huevo 12.82500 12.63333
+4     Grasa 10.00833 15.45000
+5    Frijol 12.85833 12.60000
+6      M.e. 12.35833 13.10000
+
+$Efecto_Fibra
+     Efecto Nivel1 NIvel2
+1   C.Arroz 26.625 24.125
+2 C.platano 26.125 24.625
+3  C. Huevo 25.000 25.750
+4     Grasa 27.375 23.375
+5    Frijol 24.750 26.000
+6      M.e. 25.250 25.500
+
+$Efecto_Carbohidratos
+     Efecto   Nivel1   NIvel2
+1   C.Arroz 36.24310 38.69497
+2 C.platano 36.90986 38.02821
+3  C. Huevo 36.62081 38.31726
+4     Grasa 38.09963 36.83844
+5    Frijol 36.98705 37.95102
+6      M.e. 37.81249 37.12558
+
+$Alimento_Propuesta
+     Factor   Nivel
+1   C.Arroz Nivel 2
+2 C.platano Nivel 2
+3  C. Huevo Nivel 1
+4     Grasa Nivel 2
+5    Frijol Nivel 1
+6      M.e. Nivel 1
+
+```
+
+
+# Conclusión
+
+Para los resultados del ejemplo se elaboró un alimento para aves de postura usando como 
+materia prima cascarilla de arroz, concha de huevo, cáscara de plátano, grasa 
+vacuna, frijol caupí y microorganismos efectivos EM1.
+
+El alimento formulado cumple con los requerimientos nutricionales de alimento 
+balanceado propuestos en Revisión del Desarrollo Avícola de la Organización de 
+las Naciones Unidas para la Alimentación y el Desarrollo (FAO). El Producto 
+formulado propuesto presenta 13.02% de proteína, 15.83% de grasa cruda y 
+19.51% de fibra, además 10.03% de humedad y 3.69% de cenizas.
+
+# Recomendaciones
+
+Evaluar el comportamiento y consumo del alimento elaborado por las 
+aves de corral.
+
+Comparar la ganancia de peso de las aves alimentadas con el alimento 
+elaborado.
+
+Comparar el rendimiento productivo de huevos de las aves alimentadas 
+con el alimento elaborado.
+
+# Literatura Citada
+
+
+
